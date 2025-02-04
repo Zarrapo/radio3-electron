@@ -1,0 +1,35 @@
+{
+  "name": "electron-radio3",
+  "version": "3.0.0",
+  "main": "main.js",
+  "type": "module",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder"
+  },
+  "author": "Germán",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^34.0.2",
+    "electron-builder": "^25.1.8"
+  },
+  "dependencies": {
+    "cross-fetch": "^4.1.0",
+    "electron-store": "^10.0.1"
+  },
+  "build": {
+    "appId": "es.ordiales.radio3",
+    "productName": "Radio 3 Desktop",
+    "win": {
+      "icon": "assets/icons/icon.ico",
+      "target": "nsis"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowElevation": true,
+      "perMachine": true,
+      "allowToChangeInstallationDirectory": true,
+      "include": "build/installer.nsh"
+    }
+  }
+}
