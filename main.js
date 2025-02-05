@@ -17,8 +17,8 @@ app.whenReady().then(() => {
     createTray();
     createWindow();
     
-    // Solo configurar el inicio automático si la app está empaquetada y en producción
-    if (app.isPackaged && process.env.NODE_ENV === 'production') {
+    // Solo configurar el inicio automático si la app está empaquetada
+    if (app.isPackaged) {
         app.setLoginItemSettings({
             openAtLogin: true,
             openAsHidden: true,
