@@ -1,4 +1,4 @@
-import { app, BrowserWindow, ipcMain, Menu, Tray } from 'electron';
+import { app, BrowserWindow, ipcMain, Menu, Tray, shell } from 'electron';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import Store from 'electron-store';
@@ -18,7 +18,8 @@ app.whenReady().then(() => {
     createWindow();
     
     app.setLoginItemSettings({
-        openAtLogin: true
+        openAtLogin: true,
+        openAsHidden: true,
     });
 });
 
@@ -77,10 +78,11 @@ function createWindow() {
         show: false, // No mostrar en la barra de tareas al inicio
         skipTaskbar: true, // No aparece en la barra de tareas
         frame: false, // Elimina los controles de minimizar, maximizar y cerrar
-        resizable: true // Permite redimensionar
-        //resizable: false // Permite redimensionar
+        //resizable: true // Permite redimensionar
+        resizable: false // Permite redimensionar
     });
 
+    // Cargar el archivo HTML de la ventana principal
     mainWindow.loadFile(path.join(__dirname, 'index.html'));
 
     // Eliminar menú de Electron
@@ -190,5 +192,11 @@ function createAboutWindow() {
         aboutWindow = null; // Limpiar la referencia
         mainWindow.show();
         mainWindow.focus();
+    });
+
+    // Configuramos el handler para abrir enlaces externamente
+    aboutWindow.webContents.setWindowOpenHandler(({ url }) => {
+        shell.openExternal(url);
+        return { action: 'deny' };
     });
 }
