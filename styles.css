@@ -1,20 +1,24 @@
 /* Estilos generales */
 body {
     font-family: 'Montserrat', sans-serif;
-    background-color: #0a0a0a; /* Fondo más oscuro */
+    background-color: #0a0a0a; /* Fondo */
     color: white;
     text-align: center;
     margin: 0;
     padding: 10px;
 }
 
-.draggable-logo {
-    -webkit-app-region: drag;
-    cursor: grab;
+.rne-logo {
+    /* Permite arrastrar la ventana desde la imagen */
+    /* -webkit-app-region: drag; */
+    /* Quitar o reemplazar cursor por inherit. */
+    /* cursor: default; */
+    cursor: inherit;
     display: block;
     margin: 10px auto;
     user-select: none; /* Evita selección accidental */
-    width: 220px; /* Reducido proporcionalmente */
+    width: 220px;
+    -webkit-user-drag: none;
 }
 
 /* Contenedor de los botones */
@@ -23,7 +27,7 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 12px; /* Más separación entre botones */
+    gap: 12px; /* Separación entre botones */
     margin-top: 15px;
 }
 
@@ -36,12 +40,21 @@ button {
     background-color: #d00000; /* Rojo sólido sin degradado */
     border: none;
     padding: 10px 30px;
-    width: 220px; /* Reducido proporcionalmente */
+    width: 220px;
     height: 50px;
     cursor: pointer;
     border-radius: 4px;
     user-select: none; /* Evita selección de texto en los botones */
-    -webkit-app-region: no-drag; /* Permite el menú contextual sobre los botones */
+    transition: background-color 0.3s ease-in-out; /* Efecto de transición */
+
+    /* Permite el menú contextual sobre los botones */
+    /* NO FUNCIONA */
+    /* -webkit-app-region: no-drag; */
+}
+
+/* Efecto hover para mejorar la experiencia */
+button:hover {
+    background-color: #b00000;
 }
 
 /* Botón en reproducción */
@@ -50,7 +63,45 @@ button.active {
     background-color: #ff3333; /* Color más intenso para distinguir */
 }
 
+/* Icono de reproducción en el botón activo */
+button.active::after {
+    content: "\f028"; /* Código del icono de volumen de FontAwesome */
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+    margin-left: 8px;
+    font-size: 18px;
+    color: rgb(247, 186, 186); /* Personaliza el color del icono */
+}
+
 /* Espaciado para evitar que se toquen */
 button + button {
     margin-top: 8px;
 }
+
+/* Botón en pausa */
+button.paused {
+    border: 2px solid white;
+    background-color: #666; /* Color gris para indicar pausa */
+}
+
+/* Icono de pausa */
+button.paused::after {
+    content: "\f04c"; /* Código del icono de pausa de FontAwesome */
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+    margin-left: 8px;
+    font-size: 18px;
+    color: white;
+}
+
+/* Animación opcional para resaltar el icono */
+@keyframes blink {
+    0% { opacity: 1; }
+    50% { opacity: 0.5; }
+    100% { opacity: 1; }
+}
+
+/* Si quieres que el icono parpadee, descomenta esta línea */
+button.active::after { animation: blink 1s infinite alternate; } 
+/* Si quieres que el icono parpadee más lento, descomenta esta línea */
+/* button.active::after { animation: blink 1.5s infinite alternate; } */

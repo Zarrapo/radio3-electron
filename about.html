@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acerca de</title>
+    <style>
+        /* Importar fuente personalizada */
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+        body { 
+            font-family: 'Roboto', sans-serif; 
+            text-align: center; 
+            margin: 20px; 
+        }
+        /* Título en rojo */
+        h2 { 
+            color: #b00000; 
+            font-family: 'Roboto', sans-serif; 
+        }
+        /* Resto del texto en verde */
+        .info, 
+        .info p { 
+            color: rgb(10, 32, 133); 
+            font-family: 'Roboto', sans-serif; 
+            margin: 5px 0; }
+        .info { margin: 20px 0; }
+        .footer { 
+            position: fixed;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            text-align: right;
+            padding: 10px 20px; /* Opcional: ajusta el padding */
+            background: inherit; /* Mantiene fondo si es necesario */
+        }
+        button { padding: 5px 10px; font-size: 16px; }
+    </style>
+</head>
+<body>
+    <h2>Reproductor de Radio</h2>
+    <div class="info">
+        <p style="margin-bottom: 8px;"><b>Autor: Germán</b></p>
+        <p style="margin-bottom: 5px;">Versión: 1.0</p>
+        <p style="margin-bottom: 5px;">Electron: 34.0.2</p>
+        <p style="margin-bottom: 5px;">NPM: 11.1.0</p>
+        <p style="margin-bottom: 5px;">Node.js: 22.13.1</p>
+        
+        <p style="margin-top: 15px; text-align: center;">
+            <img src="assets/icons/mit.png" alt="MIT License" style="width:40px; vertical-align: middle; margin-right: 5px;">
+            License 2025
+        </p>
+        
+        <p style="margin-bottom: 8px;"></p>
+
+        <div>
+            <a href="https://github.com/Zarrapo" target="_blank">
+                <img src="assets/icons/github.png" alt="GitHub" style="width:40px; margin-bottom: 10px;">
+            </a>
+        </div>
+        <div>
+            <a href="https://github.com/Zarrapo" target="_blank">https://github.com/Zarrapo</a>
+        </div>
+        </p>
+        
+    </div>
+    <div class="footer">
+        <button onclick="window.close();">Aceptar</button>
+    </div>
+</body>
+</html>
