@@ -1,0 +1,56 @@
+/* Estilos generales */
+body {
+    font-family: 'Montserrat', sans-serif;
+    background-color: #0a0a0a; /* Fondo más oscuro */
+    color: white;
+    text-align: center;
+    margin: 0;
+    padding: 10px;
+}
+
+.draggable-logo {
+    -webkit-app-region: drag;
+    cursor: grab;
+    display: block;
+    margin: 10px auto;
+    user-select: none; /* Evita selección accidental */
+    width: 220px; /* Reducido proporcionalmente */
+}
+
+/* Contenedor de los botones */
+.button-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px; /* Más separación entre botones */
+    margin-top: 15px;
+}
+
+button {
+    font-size: 18px;
+    font-weight: bold;
+    text-transform: lowercase;
+    font-family: 'Montserrat', sans-serif;
+    color: white;
+    background-color: #d00000; /* Rojo sólido sin degradado */
+    border: none;
+    padding: 10px 30px;
+    width: 220px; /* Reducido proporcionalmente */
+    height: 50px;
+    cursor: pointer;
+    border-radius: 4px;
+    user-select: none; /* Evita selección de texto en los botones */
+    -webkit-app-region: no-drag; /* Permite el menú contextual sobre los botones */
+}
+
+/* Botón en reproducción */
+button.active {
+    border: 2px solid white; /* Resaltar el botón activo */
+    background-color: #ff3333; /* Color más intenso para distinguir */
+}
+
+/* Espaciado para evitar que se toquen */
+button + button {
+    margin-top: 8px;
+}

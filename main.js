@@ -1,103 +1,132 @@
-// Instalar Dependencias desde el terminal
-/*
-npm install electron --save-dev
-npm install electron-store --save
-npm install electron-builder --save-dev
-*/
-
-// Script de Inicio
-// npm start
-
-// Script de Empaquetado
-// npm run build
-
-// Importar los módulos necesarios 
-import { app, BrowserWindow, session } from 'electron';
-import { fileURLToPath } from 'url';
+import { app, BrowserWindow, ipcMain, Menu, Tray } from 'electron';
 import path from 'path';
+import { fileURLToPath } from 'url';
 import Store from 'electron-store';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Definir la variable de la ventana principal
-let mainWindow;
-// Instancia de almacenamiento de datos
 const store = new Store();
+let mainWindow;
+let tray;
+let isFirstUserAction = true;
 
-// Configurar la sesión de Electron
-function createWindow() {
-  // Obtener el tamaño y la posición de la ventana almacenados, o usar valores por defecto
-  const windowState = store.get('windowState') || { x: undefined, y: undefined, width: 1200, height: 900 };
-  
-  // Crear la ventana principal
-  mainWindow = new BrowserWindow({
-    x: windowState.x,
-    y: windowState.y,
-    width: windowState.width,
-    height: windowState.height,
-    webPreferences: {
-      preload: path.join(__dirname, 'preload.js'), // Usa el script preload
-      contextIsolation: true, // Asegura que los contextos están separados
-      enableRemoteModule: false,
-      nodeIntegration: false // Desactiva Node.js en el renderer por seguridad
-    },
-    icon: path.join(__dirname, 'assets', 'icons', 'icon.ico') // Asignar el icono
-  });
-
-  // Ocultar la barra de menús de Electron
-  mainWindow.setMenu(null);
-
-  // Cargar la URL de la aplicación (en este ejemplo, una web)
-  //mainWindow.loadURL('https://www.radio-espana.es/radio-3?utm_source=homescreen');
-  mainWindow.loadURL('https://www.ivoox.com/escuchar-online-radio-3_tw_64_1.html');
-
-  // Guardar el estado y el tamaño de la ventana al cerrarla
-  mainWindow.on('close', () => {
-    store.set('windowState', mainWindow.getBounds());
-  });
-
-  // Limpiar la referencia de la ventana al cerrarla
-  mainWindow.on('closed', () => {
-    mainWindow = null;
-  });
-}
-
-// Crear ventana y manejo de errores al iniciar
-//app.whenReady().then(createWindow).catch(console.error);
 app.whenReady().then(() => {
-  // Bloqueo de dominios de anuncios en la sesión
-  session.defaultSession.webRequest.onBeforeRequest((details, callback) => {
-    // Lista de patrones de URL que quieras bloquear
-    const blockedDomains = [
-      'safeframe.googlesyndication.com',
-      'googletagservices.com',
-      // añade más si lo necesitas
-    ];
+    createTray();
+    createWindow();
     
-    // Si la URL contiene alguno de los dominios bloqueados, cancelar la solicitud
-    if (blockedDomains.some(domain => details.url.includes(domain))) {
-      console.log("Bloqueando URL: ", details.url);
-      return callback({ cancel: true });
-    }
-    callback({ cancel: false });
-  });
-
-  // Crear la ventana principal
-  createWindow();
-}).catch(console.error);
-
-
-
-
-app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') {
-    app.quit();
-  }
+    app.setLoginItemSettings({
+        openAtLogin: true
+    });
 });
 
-app.on('activate', () => {
-  if (BrowserWindow.getAllWindows().length === 0) {
-    createWindow();
-  }
+function createTray() {
+    tray = new Tray(path.join(__dirname, 'assets', 'icons', 'rne.ico'));
+    tray.setToolTip('Reproductor de Radio');
+    
+    const contextMenu = Menu.buildFromTemplate([
+        { label: 'Mostrar/Ocultar', click: () => {
+            if (mainWindow.isVisible()) {
+                mainWindow.hide();
+            } else {
+                mainWindow.show();
+                playLastStation();
+            }
+        }},
+        { label: 'Salir', click: () => {
+            mainWindow.destroy();
+            app.quit();
+        }}
+    ]);
+    
+    tray.setContextMenu(contextMenu);
+    
+    tray.on('click', () => {
+        if (mainWindow.isVisible()) {
+            mainWindow.hide();
+        } else {
+            mainWindow.show();
+            playLastStation();
+        }
+    });
+}
+
+function createWindow() {
+    const windowState = store.get('windowState', { width: 200, height: 300, x: undefined, y: undefined });
+    const lastStation = store.get('lastStation', 'https://dispatcher.rndfnk.com/crtve/rner3/main/mp3/high');
+
+    mainWindow = new BrowserWindow({
+        width: windowState.width,
+        height: windowState.height,
+        x: windowState.x,
+        y: windowState.y,
+        icon: path.join(__dirname, 'assets', 'icons', 'rne.ico'),
+        webPreferences: {
+            nodeIntegration: true,
+            contextIsolation: false
+        },
+        show: false, // No mostrar en la barra de tareas al inicio
+        skipTaskbar: true, // No aparece en la barra de tareas
+        frame: false, // Elimina los controles de minimizar, maximizar y cerrar
+        //resizable: true // Permite redimensionar
+        resizable: false // Permite redimensionar
+    });
+
+    mainWindow.loadFile(path.join(__dirname, 'index.html'));
+
+    // Eliminar menú de Electron
+    Menu.setApplicationMenu(null);
+
+    const contextMenu = Menu.buildFromTemplate([
+        { label: 'Mostrar/Ocultar', click: () => {
+            if (mainWindow.isVisible()) {
+                mainWindow.hide();
+            } else {
+                mainWindow.show();
+                playLastStation();
+            }
+        }},
+        { label: 'Salir', click: () => {
+            mainWindow.destroy();
+            app.quit();
+        }}
+    ]);
+
+    mainWindow.webContents.once('did-finish-load', () => {
+        mainWindow.webContents.send('load-last-station', lastStation);
+    });
+
+    mainWindow.on('close', (event) => {
+        event.preventDefault();
+        store.set('windowState', mainWindow.getBounds()); // Guarda tamaño y posición
+        mainWindow.hide(); // Ocultar en lugar de cerrar
+    });
+
+    mainWindow.on('resize', () => {
+        store.set('windowState', mainWindow.getBounds()); // Guarda tamaño en cada cambio
+    });
+
+    mainWindow.on('move', () => {
+        store.set('windowState', mainWindow.getBounds()); // Guarda posición
+    });
+
+    mainWindow.webContents.on('context-menu', () => {
+        contextMenu.popup();
+    });
+}
+
+function playLastStation() {
+    const lastStation = store.get('lastStation');
+    if (lastStation) {
+        mainWindow.webContents.send('play-last-station', lastStation);
+    }
+}
+
+// Guardar la última emisora seleccionada y reproducir solo tras la primera acción del usuario
+ipcMain.on('change-station', (event, url) => {
+    store.set('lastStation', url);
+    if (isFirstUserAction) {
+        playLastStation();
+        isFirstUserAction = false;
+    }
 });

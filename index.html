@@ -1,15 +1,28 @@
-<!-- index.html -->
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>Reproductor de Stream</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reproductor de Radio</title>
+    <script defer src="renderer.js"></script>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <h1>Radio 3</h1>
-  <audio controls autoplay style="width: 100%;">
-    <source src="https://dispatcher.rndfnk.com/crtve/rner3/main/mp3/high" type="audio/mpeg">
-    Tu navegador no soporta el elemento de audio.
-  </audio>
+    
+    <!--
+    <img src="assets/icons/rne.png" alt="RNE Logo" class="rne-logo" style="margin-top: 20px;">
+    -->
+    
+    <img src="assets/icons/rne.png" alt="RNE Logo" class="draggable-logo" style="margin-top: 15px;">
+
+
+    <div class="button-container">
+        <button id="station1" class="station-button">Radio 3</button>
+        <button id="station2" class="station-button">Radio Clásica</button>
+        <button id="station3" class="station-button">Radio 5</button>
+        <button id="station4" class="station-button">Radio Nacional</button>
+    </div>
+    
+    <audio id="audio"></audio>
 </body>
 </html>
