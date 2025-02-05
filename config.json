@@ -1,0 +1,20 @@
+{
+    "stations": {
+      "station1": {
+        "url": "https://dispatcher.rndfnk.com/crtve/rner3/main/mp3/high",
+        "label": "Radio 3"
+      },
+      "station2": {
+        "url": "https://dispatcher.rndfnk.com/crtve/rnerc/main/mp3/high",
+        "label": "Radio Clásica"
+      },
+      "station3": {
+        "url": "https://dispatcher.rndfnk.com/crtve/rne5/main/mp3/high",
+        "label": "Radio 5"
+      },
+      "station4": {
+        "url": "https://dispatcher.rndfnk.com/crtve/rne1/main/mp3/high",
+        "label": "Radio Nacional"
+      }
+    }
+}
