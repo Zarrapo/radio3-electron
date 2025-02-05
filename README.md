@@ -48,3 +48,5 @@ El ejecutable se generará en la carpeta `dist/`.
 
 ## 📜 Licencia
 Este proyecto está bajo la licencia **MIT**.
+
+![Captura Pantalla](images/radio3-electron-captura.png)
