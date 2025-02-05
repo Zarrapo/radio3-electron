@@ -3,5 +3,6 @@
 !macroend
 
 !macro customInit
-  StrCpy $INSTDIR "$PROGRAMFILES\${PRODUCT_NAME}"
+  SetRegView 64
+  StrCpy $INSTDIR "$PROGRAMFILES64\${PRODUCT_NAME}"
 !macroend

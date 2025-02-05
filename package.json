@@ -40,6 +40,7 @@
       "allowElevation": true,
       "perMachine": true,
       "allowToChangeInstallationDirectory": true,
+      "installDirectory": "$PROGRAMFILES64\\Radio 3 Desktop",
       "include": "build/installer.nsh"
     }
   }
