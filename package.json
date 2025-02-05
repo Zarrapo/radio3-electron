@@ -1,6 +1,6 @@
 {
   "name": "electron-radio3",
-  "version": "3.0.0",
+  "version": "1.2.0",
   "main": "main.js",
   "type": "module",
   "scripts": {
@@ -10,6 +10,7 @@
   "author": "Germán",
   "license": "MIT",
   "devDependencies": {
+    "cross-env": "^7.0.3",
     "electron": "^34.0.2",
     "electron-builder": "^25.1.8"
   },
@@ -28,7 +29,9 @@
       "target": [
         {
           "target": "nsis",
-          "arch": ["x64"]
+          "arch": [
+            "x64"
+          ]
         }
       ]
     },

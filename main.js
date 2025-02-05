@@ -17,10 +17,13 @@ app.whenReady().then(() => {
     createTray();
     createWindow();
     
-    app.setLoginItemSettings({
-        openAtLogin: true,
-        openAsHidden: true,
-    });
+    // Solo configurar el inicio automático si la app está empaquetada y en producción
+    if (app.isPackaged && process.env.NODE_ENV === 'production') {
+        app.setLoginItemSettings({
+            openAtLogin: true,
+            openAsHidden: true,
+        });
+    }
 });
 
 function createTray() {
@@ -34,6 +37,7 @@ function createTray() {
             else { mainWindow.show(); playLastStation(); }
         }},
         { label: 'Mover', click: () => { mainWindow.webContents.send('start-window-move'); } },
+        { type: 'separator' },
         { label: 'Salir', click: () => {
             if(aboutWindow){ 
                 aboutWindow.removeAllListeners('close');
@@ -45,8 +49,11 @@ function createTray() {
             }
             app.quit();
         }},
+        // Si queremos añadir un submenú descomentar
+        /*
         { type: 'separator' },
         { label: 'Acerca de', click: () => { createAboutWindow(); } }
+         */
     ]);
     
     tray.setContextMenu(contextMenu);
@@ -95,6 +102,7 @@ function createWindow() {
             else { mainWindow.show(); playLastStation(); }
         }},
         { label: 'Mover', click: () => { mainWindow.webContents.send('start-window-move'); } },
+        { type: 'separator' },
         { label: 'Salir', click: () => {
             if(mainWindow){
                 mainWindow.removeAllListeners('close'); // Remover listeners para evitar error
