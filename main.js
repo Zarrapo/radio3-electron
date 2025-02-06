@@ -36,8 +36,10 @@ function createTray() {
             if (mainWindow.isVisible()) { mainWindow.hide(); } 
             else { mainWindow.show(); playLastStation(); }
         }},
-        { label: 'Mover', click: () => { mainWindow.webContents.send('start-window-move'); } },
-        { type: 'separator' },
+
+        //{ label: 'Mover', click: () => { mainWindow.webContents.send('start-window-move'); } },
+        //{ type: 'separator' },
+
         { label: 'Salir', click: () => {
             if(aboutWindow){ 
                 aboutWindow.removeAllListeners('close');
@@ -49,6 +51,7 @@ function createTray() {
             }
             app.quit();
         }},
+        
         // Si queremos añadir un submenú descomentar
         /*
         { type: 'separator' },
