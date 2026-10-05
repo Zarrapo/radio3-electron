@@ -118,7 +118,7 @@ function createWindow() {
     ]);
 
     mainWindow.webContents.once('did-finish-load', () => {
-        mainWindow.webContents.send('load-last-station', lastStation);
+        mainWindow.webContents.send('play-last-station', lastStation);
     });
 
     mainWindow.on('close', (event) => {
