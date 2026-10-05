@@ -73,7 +73,6 @@ function createTray() {
 
 function createWindow() {
     const windowState = store.get('windowState', { width: 200, height: 300, x: undefined, y: undefined });
-    const lastStation = store.get('lastStation', 'https://dispatcher.rndfnk.com/crtve/rner3/main/mp3/high');
 
     mainWindow = new BrowserWindow({
         width: windowState.width,
@@ -116,10 +115,6 @@ function createWindow() {
         { type: 'separator' },
         { label: 'Acerca de', click: () => { createAboutWindow(); } }
     ]);
-
-    mainWindow.webContents.once('did-finish-load', () => {
-        mainWindow.webContents.send('play-last-station', lastStation);
-    });
 
     mainWindow.on('close', (event) => {
         event.preventDefault();
